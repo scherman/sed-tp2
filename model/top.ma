@@ -1,32 +1,42 @@
 [top]
-components : persona gen@generator
-link : out@gen in@persona
-
-[gen]
-distribution : exponential
-mean : 3
-initial : 1
-increment : 0 
-out : out
+components : persona
 
 [persona]
 type : cell
-border : nowrapped
+border : wrapped
 delay : transport
 defaultDelayTime : 100
-dim : (3, 10)
-initialvalue : 0
-in : in
-link : in in@persona(1,0)
-neighbors : persona(-1,-1) persona(-1,0) persona(-1,1)
-neighbors : persona(0,-1) persona(0,0) persona(0,1)
-neighbors : persona(1,-1) persona(1,0) persona(1,1)
-localtransition: persona-rule
-initialrowvalues : 1 1010100000
+dim : (5, 5, 2)
+initialCellsValue : top.val
+initialValue : 0
+localTransition : persona-rule
+
+neighbors :                                  persona(-2,0,1)
+neighbors :                 persona(-1,-1,1) persona(-1,0,1) persona(-1,1,1)
+neighbors : persona(0,-2,1) persona(0,-1,1)  persona(0,0,1)  persona(0,1,1) persona(0,2,1)
+neighbors :                 persona(1,-1,1)  persona(1,0,1)  persona(1,1,1)
+neighbors :                                  persona(2,0,1)
+
+neighbors :                                  persona(-2,0,0)
+neighbors :                 persona(-1,-1,0) persona(-1,0,0) persona(-1,1,0)
+neighbors : persona(0,-2,0) persona(0,-1,0)  persona(0,0,0)  persona(0,1,0) persona(0,2,0)
+neighbors :                 persona(1,-1,0)  persona(1,0,0)  persona(1,1,0)
+neighbors :                                  persona(2,0,0)
 
 [persona-rule]
-rule : {(0,0) + 1} 100 { (0,-1) = 1 and cellpos(1) = 9 }
-rule : {(0,0)} 100 { cellpos(1) = 9 }
-rule : 0 100 { (0,0) = 1 and cellpos(1) < 9 }
-rule : 1 100 { (0,0) = 0 and (0,-1) = 1 }
-rule : 0 100 {t} 
+%REGLAS NIVEL DIRECCION
+rule : 1 100 {cellpos(2) = 1 and random <= 0.25} 
+rule : 2 100 {cellpos(2) = 1 and random <= 0.25} 
+rule : 3 100 {cellpos(2) = 1 and random <= 0.25} 
+rule : 4 100 {cellpos(2) = 1}
+% REGLAS PARA AVANZAR
+rule : 1 100 { cellpos(2) = 0 and (0,0,0) = 0 and (0,1,0) = 1 and (0,1,1) = 1 }
+rule : 1 100 { cellpos(2) = 0 and (0,0,0) = 0 and (1,0,0) = 1 and (1,0,1) = 2 }
+rule : 1 100 { cellpos(2) = 0 and (0,0,0) = 0 and (0,-1,0) = 1 and (0,-1,1) = 3 } 
+rule : 1 100 { cellpos(2) = 0 and (0,0,0) = 0 and (-1,0,0) = 1 and (-1,0,1) = 4 }
+% REGLAS PARA DECIDIR QUE SOY EL QUE AVANZA
+rule : 0 100 {cellpos(2) = 0 and (0,0,0) = 1 and (0,0,1) = 3 and (0,1,0) = 0}
+rule : 0 100 {cellpos(2) = 0 and (0,0,0) = 1 and ((1,-1,0) = 0 or (1,-1,1) != 1)}
+rule : 0 100 {cellpos(2) = 0 and (0,0,0) = 1 and ((0,-2,0) = 0 or (0,-2,1) != 1) and ((-1,-1,0) = 0 or (-1,-1,1) != 4)} 
+rule : 0 100 {cellpos(2) = 0 and (0,0,0) = 1 and ((-1,-1,0) = 0 or (-1,-1,1) != 1) and ((-2,0,0) = 0 or (-2,0,1) != 4) and ((-1,1,0) = 0 or (-1,1,1) != 1)}
+rule : {(0,0,0)} 100 {cellpos(2) = 0}
