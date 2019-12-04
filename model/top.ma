@@ -25,18 +25,16 @@ neighbors :                                  persona(2,0,0)
 
 [persona-rule]
 %REGLAS NIVEL DIRECCION
-rule : 1 100 {cellpos(2) = 1 and random <= 0.25} 
-rule : 2 100 {cellpos(2) = 1 and random <= 0.25} 
-rule : 3 100 {cellpos(2) = 1 and random <= 0.25} 
-rule : 4 100 {cellpos(2) = 1}
+rule : {randInt(3) + 1} 100 {cellpos(2) = 1} 
 % REGLAS PARA AVANZAR
 rule : 1 100 { cellpos(2) = 0 and (0,0,0) = 0 and (0,1,0) = 1 and (0,1,1) = 1 }
 rule : 1 100 { cellpos(2) = 0 and (0,0,0) = 0 and (1,0,0) = 1 and (1,0,1) = 2 }
 rule : 1 100 { cellpos(2) = 0 and (0,0,0) = 0 and (0,-1,0) = 1 and (0,-1,1) = 3 } 
 rule : 1 100 { cellpos(2) = 0 and (0,0,0) = 0 and (-1,0,0) = 1 and (-1,0,1) = 4 }
 % REGLAS PARA DECIDIR QUE SOY EL QUE AVANZA
-rule : 0 100 {cellpos(2) = 0 and (0,0,0) = 1 and (0,0,1) = 3 and (0,1,0) = 0}
-rule : 0 100 {cellpos(2) = 0 and (0,0,0) = 1 and ((1,-1,0) = 0 or (1,-1,1) != 1)}
-rule : 0 100 {cellpos(2) = 0 and (0,0,0) = 1 and ((0,-2,0) = 0 or (0,-2,1) != 1) and ((-1,-1,0) = 0 or (-1,-1,1) != 4)} 
-rule : 0 100 {cellpos(2) = 0 and (0,0,0) = 1 and ((-1,-1,0) = 0 or (-1,-1,1) != 1) and ((-2,0,0) = 0 or (-2,0,1) != 4) and ((-1,1,0) = 0 or (-1,1,1) != 1)}
+rule : 0 100 {cellpos(2) = 0 and (0,0,0) = 1 and (0,1,0)  = 0 and (0,0,1) = 3 }
+rule : 0 100 {cellpos(2) = 0 and (0,0,0) = 1 and (1,0,0)  = 0 and (0,0,1) = 4 and ((1,-1,0) = 0 or (1,-1,1) != 3)}
+rule : 0 100 {cellpos(2) = 0 and (0,0,0) = 1 and (0,-1,0) = 0 and (0,0,1) = 1 and ((0,-2,0) = 0 or (0,-2,1) != 3) and ((-1,-1,0) = 0 or (-1,-1,1) != 4)} 
+rule : 0 100 {cellpos(2) = 0 and (0,0,0) = 1 and (-1,0,0) = 0 and (0,0,1) = 2 and ((-1,-1,0) = 0 or (-1,-1,1) != 3) and ((-2,0,0) = 0 or (-2,0,1) != 4) and ((-1,1,0) = 0 or (-1,1,1) != 1)}
+
 rule : {(0,0,0)} 100 {cellpos(2) = 0}
