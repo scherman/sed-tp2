@@ -4,7 +4,7 @@ components : persona
 [persona]
 type : cell
 border : wrapped
-delay : transport
+delay : inertial
 defaultDelayTime : 100
 dim : (5, 5, 3)
 initialCellsValue : top.val
@@ -31,22 +31,27 @@ neighbors :                                  persona(2,0,0)
 
 [persona-rule]
 %REGLAS NIVEL DIRECCION
-rule : {randInt(3) + 1} 100 {cellpos(2) = 1} 
+rule : {randInt(3) + 1} 100 {cellpos(2) = 1}
+
 % ACTUALIZO MI SALARIO
 rule : {(0,0,0) + 10} 0 { cellpos(2) = 0 and (0,0,0) != 0 and (0,0,2) = 1}
+rule : {(0,0,0) - 15} 0 { cellpos(2) = 0 and (0,0,0) > 15 and randInt(5) > 4}
+
 % REGLAS PARA AVANZAR
 rule : {(0,-1,0)} 100 { cellpos(2) = 0 and (0,0,0) = 0 and (0,-1,0) != 0 and (0,-1,1) = 3 } 
 rule : {(-1,0,0)} 100 { cellpos(2) = 0 and (0,0,0) = 0 and (-1,0,0) != 0 and (-1,0,1) = 4 and ((0,-1,0) = 0 or (0,-1,1) != 3)}
 rule : {(0,1,0)}  100 { cellpos(2) = 0 and (0,0,0) = 0 and (0,1,0)  != 0 and (0,1,1) = 1  and ((0,-1,0) = 0 or (0,-1,1) != 3) and ((-1,0,0) = 0 or (-1,0,1) != 4)}
 rule : {(1,0,0)}  100 { cellpos(2) = 0 and (0,0,0) = 0 and (1,0,0)  != 0 and (1,0,1) = 2  and ((0,-1,0) = 0 or (0,-1,1) != 3) and ((-1,0,0) = 0 or (-1,0,1) != 4) and ((0,1,0) = 0 or (0,1,1) != 1)}
+
 % REGLAS PARA DECIDIR QUE SOY EL QUE AVANZA
 rule : 0 100 {cellpos(2) = 0 and (0,0,0) != 0 and (0,1,0)  = 0 and (0,0,1) = 3 }
 rule : 0 100 {cellpos(2) = 0 and (0,0,0) != 0 and (1,0,0)  = 0 and (0,0,1) = 4 and ((1,-1,0)  = 0 or (1,-1,1) != 3)}
 rule : 0 100 {cellpos(2) = 0 and (0,0,0) != 0 and (0,-1,0) = 0 and (0,0,1) = 1 and ((0,-2,0)  = 0 or (0,-2,1) != 3) and ((-1,-1,0) = 0 or (-1,-1,1) != 4)} 
 rule : 0 100 {cellpos(2) = 0 and (0,0,0) != 0 and (-1,0,0) = 0 and (0,0,1) = 2 and ((-1,-1,0) = 0 or (-1,-1,1) != 3) and ((-2,0,0) = 0 or (-2,0,1) != 4) and ((-1,1,0) = 0 or (-1,1,1) != 1)}
-%REGLA SALARIO
+
+%REGLA DEFAULT
 rule : {(0,0,0)} 100 {cellpos(2) = 0}
 
 %REGLA SWITCH SALARIO
+rule : 1 1000 {cellpos(2) = 2 and (0,0,0) = 0}
 rule : 0 0 {cellpos(2) = 2 and (0,0,0) = 1}
-rule : 1 1000 {cellpos(2) = 2}

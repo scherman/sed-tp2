@@ -4,3 +4,4 @@ cd++/
 bin/
 */logs/*
 *.o
+logs*
