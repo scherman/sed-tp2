@@ -74,10 +74,10 @@ rule : {15} 0 { cellpos(2) = 3 and (0,0,0) = -1}
 % para hacer que una persona gaste plata cuando entre a un local y el local gane al mismo tiempo, lo que hacemos es tener un "estado intermedio"
 % en donde la persona que viene y consume termina con su sueldo en negativo, para que despues en la prox regla un local vea si el sueldo
 % de la persona esta en negativo significa que consumio, entonces cobra.
-rule : {-1 * ((0,-1,0) - 5)} 100 { cellpos(2) = 0 and (0,0,0) = 0 and (0,-1,0) > 5 and (0,-1,1) = 3 and (0,0,3) > 0} 
-rule : {-1 * ((-1,0,0) - 5)} 100 { cellpos(2) = 0 and (0,0,0) = 0 and (-1,0,0) > 5 and (-1,0,1) = 4 and ((0,-1,0) = 0 or (0,-1,1) != 3) and (0,0,3) > 0}
-rule : {-1 * ((0,1,0) - 5)}  100 { cellpos(2) = 0 and (0,0,0) = 0 and (0,1,0)  > 5 and (0,1,1) = 1  and ((0,-1,0) = 0 or (0,-1,1) != 3) and ((-1,0,0) = 0 or (-1,0,1) != 4) and (0,0,3) > 0}
-rule : {-1 * ((1,0,0) - 5)}  100 { cellpos(2) = 0 and (0,0,0) = 0 and (1,0,0) > 5 and (1,0,1) = 2  and ((0,-1,0) = 0 or (0,-1,1) != 3) and ((-1,0,0) = 0 or (-1,0,1) != 4) and ((0,1,0) = 0 or (0,1,1) != 1) and (0,0,3) > 0}
+rule : {-1 * ((0,-1,0) - 5)} 100 { cellpos(2) = 0 and (0,0,0) = 0 and (0,-1,0) > 5 and (0,-1,1) = 3 and (0,0,3) > 0 and randInt(3) < 2} 
+rule : {-1 * ((-1,0,0) - 5)} 100 { cellpos(2) = 0 and (0,0,0) = 0 and (-1,0,0) > 5 and (-1,0,1) = 4 and ((0,-1,0) = 0 or (0,-1,1) != 3) and (0,0,3) > 0 and randInt(3) < 2}
+rule : {-1 * ((0,1,0) - 5)}  100 { cellpos(2) = 0 and (0,0,0) = 0 and (0,1,0)  > 5 and (0,1,1) = 1  and ((0,-1,0) = 0 or (0,-1,1) != 3) and ((-1,0,0) = 0 or (-1,0,1) != 4) and (0,0,3) > 0 and randInt(3) < 2}
+rule : {-1 * ((1,0,0) - 5)}  100 { cellpos(2) = 0 and (0,0,0) = 0 and (1,0,0) > 5 and (1,0,1) = 2  and ((0,-1,0) = 0 or (0,-1,1) != 3) and ((-1,0,0) = 0 or (-1,0,1) != 4) and ((0,1,0) = 0 or (0,1,1) != 1) and (0,0,3) > 0 and randInt(3) < 2}
 
 % LOCAL GANA PLATA CUANDO PERSONA CONSUME
 rule: {(0,0,0) + 5} 0 { cellpos(2) = 3 and (0,0,0) > 0 and (0,0,1) < 0}
