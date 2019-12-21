@@ -48,7 +48,13 @@ rule : {-1} 0 { cellpos(2) = 3 and (0,0,1) > 15 and (0,0,0) = 0 and randInt(5) >
 rule : {(0,0,0) - 15} 0 { cellpos(2) = 0 and (0,0,3) = -1}
 rule : {15} 0 { cellpos(2) = 3 and (0,0,0) = -1}
 
-% REGLAS 	PARA AVANZAR
+% REGLAS PARA AVANZAR (CON CONSUMO)
+rule : {(0,-1,0) - 5} 100 { cellpos(2) = 0 and (0,0,0) = 0 and (0,-1,0) > 5 and (0,-1,1) = 3 and (0,0,3) > 0} 
+rule : {(-1,0,0) - 5} 100 { cellpos(2) = 0 and (0,0,0) = 0 and (-1,0,0) > 5 and (-1,0,1) = 4 and ((0,-1,0) = 0 or (0,-1,1) != 3) and (0,0,3) > 0}
+rule : {(0,1,0) - 5}  100 { cellpos(2) = 0 and (0,0,0) = 0 and (0,1,0)  > 5 and (0,1,1) = 1  and ((0,-1,0) = 0 or (0,-1,1) != 3) and ((-1,0,0) = 0 or (-1,0,1) != 4) and (0,0,3) > 0}
+rule : {(1,0,0) - 5}  100 { cellpos(2) = 0 and (0,0,0) = 0 and (1,0,0) > 5 and (1,0,1) = 2  and ((0,-1,0) = 0 or (0,-1,1) != 3) and ((-1,0,0) = 0 or (-1,0,1) != 4) and ((0,1,0) = 0 or (0,1,1) != 1) and (0,0,3) > 0}
+
+% REGLAS PARA AVANZAR
 rule : {(0,-1,0)} 100 { cellpos(2) = 0 and (0,0,0) = 0 and (0,-1,0) != 0 and (0,-1,1) = 3 } 
 rule : {(-1,0,0)} 100 { cellpos(2) = 0 and (0,0,0) = 0 and (-1,0,0) != 0 and (-1,0,1) = 4 and ((0,-1,0) = 0 or (0,-1,1) != 3)}
 rule : {(0,1,0)}  100 { cellpos(2) = 0 and (0,0,0) = 0 and (0,1,0)  != 0 and (0,1,1) = 1  and ((0,-1,0) = 0 or (0,-1,1) != 3) and ((-1,0,0) = 0 or (-1,0,1) != 4)}
