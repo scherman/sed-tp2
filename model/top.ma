@@ -36,9 +36,25 @@ neighbors : persona(0,-2,0) persona(0,-1,0)  persona(0,0,0)  persona(0,1,0) pers
 neighbors :                 persona(1,-1,0)  persona(1,0,0)  persona(1,1,0)
 neighbors :                                  persona(2,0,0)
 
+%capas
+%0 sueldos personas
+%1 switch salarios/impuestos
+%2 prox direccion personas
+%3 sueldos locales
+
 [persona-rule]
 %REGLAS NIVEL DIRECCION
+% 1: izq
+% 2: arriba
+% 3: derecha
+% 4: abajo
+% no se porq no andan las macros... (reemplazar por las macros de abajo eventualmente)
+rule : {1} 100 {cellpos(2) = 1 and ((if((0,-1,2) > 0, 1, 0) + if((0,-2,2) > 0, 1, 0) + if((-1,-1,2) > 0, 1, 0) + if((1,-1,2) > 0, 1, 0)) / 5) >= random } % 5 lo tire por tirar, tiene que ser >4 si o si para que sea una probabilidad, cuanto mas grande, mas random va a ser
+rule : {2} 100 {cellpos(2) = 1 and ((if((-2,0,2) > 0, 1, 0) + if((-1,0,2) > 0, 1, 0) + if((-1,-1,2) > 0, 1, 0) + if((-1,1,2) > 0, 1, 0)) / 5) >= random }
+rule : {3} 100 {cellpos(2) = 1 and ((if((0,1,2) > 0, 1, 0) + if((0,2,2) > 0, 1, 0) + if((-1,1,2) > 0, 1, 0) + if((1,1,2) > 0, 1, 0)) / 5) >= random }
+rule : {4} 100 {cellpos(2) = 1 and ((if((1,0,2) > 0, 1, 0) + if((2,0,2) > 0, 1, 0) + if((1,1,2) > 0, 1, 0) + if((1,-1,2) > 0, 1, 0)) / 5) >= random }
 rule : {randInt(3) + 1} 100 {cellpos(2) = 1}
+
 
 % ACTUALIZO SALARIO PERSONA
 rule : {(0,0,0) + 10} 0 { cellpos(2) = 0 and (0,0,0) != 0 and (0,0,2) = 2}
@@ -50,7 +66,7 @@ rule : {0} 0 { cellpos(2) = 3 and (0,0,0) < 10 and (0,0,3) = 1}
 % ABRO LOCAL
 % si la persona abre un local, para que aparezca un local y la persona pierda plata a la vez, ponemos como "estado intermedio" que el local empieza
 % con -1 de plata y en el mismo instante si en la capa de locales esta en -1 la persona se descuenta de su sueldo y el local agrega su ganancia
-rule : {-1} 0 { cellpos(2) = 3 and (0,0,1) > 15 and (0,0,0) = 0}
+rule : {-1} 0 { cellpos(2) = 3 and (0,0,1) > 15 and (0,0,0) = 0 and randInt(4) = 0}
 rule : {(0,0,0) - 15} 0 { cellpos(2) = 0 and (0,0,3) = -1}
 rule : {15} 0 { cellpos(2) = 3 and (0,0,0) = -1}
 
@@ -88,3 +104,19 @@ rule : 2 1000 {cellpos(2) = 2 and (0,0,0) = 0}
 rule : 1 0 {cellpos(2) = 2 and (0,0,0) = 2}
 rule : 0 0 {cellpos(2) = 2 and (0,0,0) = 1}
 
+
+#BeginMacro(cant_locales_arriba)
+if((-2,0,2) > 0, 1, 0) + if((-1,0,2) > 0, 1, 0) + if((-1,-1,2) > 0, 1, 0) + if((-1,1,2) > 0, 1, 0)
+#EndMacro
+
+#BeginMacro(cant_locales_derecha)
+if((0,1,2) > 0, 1, 0) + if((0,2,2) > 0, 1, 0) + if((-1,1,2) > 0, 1, 0) + if((1,1,2) > 0, 1, 0)
+#EndMacro
+
+#BeginMacro(cant_locales_abajo)
+if((1,0,2) > 0, 1, 0) + if((2,0,2) > 0, 1, 0) + if((1,1,2) > 0, 1, 0) + if((1,-1,2) > 0, 1, 0)
+#EndMacro
+
+#BeginMacro(cant_locales_izq)
+if((0,-1,2) > 0, 1, 0) + if((0,-2,2) > 0, 1, 0) + if((-1,-1,2) > 0, 1, 0) + if((1,-1,2) > 0, 1, 0)
+#EndMacro
