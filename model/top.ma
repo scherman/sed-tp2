@@ -40,8 +40,12 @@ neighbors :                                  persona(2,0,0)
 %REGLAS NIVEL DIRECCION
 rule : {randInt(3) + 1} 100 {cellpos(2) = 1}
 
-% ACTUALIZO MI SALARIO
-rule : {(0,0,0) + 10} 0 { cellpos(2) = 0 and (0,0,0) != 0 and (0,0,2) = 1}
+% ACTUALIZO SALARIO PERSONA
+rule : {(0,0,0) + 10} 0 { cellpos(2) = 0 and (0,0,0) != 0 and (0,0,2) = 2}
+
+% LOCALES PAGAN IMPUESTOS
+rule : {(0,0,0) - 10} 0 { cellpos(2) = 3 and (0,0,0) >= 10 and (0,0,3) = 1}
+rule : {0} 0 { cellpos(2) = 3 and (0,0,0) < 10 and (0,0,3) = 1}
 
 % ABRO LOCAL
 % si la persona abre un local, para que aparezca un local y la persona pierda plata a la vez, ponemos como "estado intermedio" que el local empieza
@@ -79,7 +83,8 @@ rule : 0 100 {cellpos(2) = 0 and (0,0,0) != 0 and (-1,0,0) = 0 and (0,0,1) = 2 a
 rule : {(0,0,0)} 100 {cellpos(2) = 0}
 rule : {(0,0,0)} 100 {cellpos(2) = 3}
 
-%REGLA SWITCH SALARIO
-rule : 1 1000 {cellpos(2) = 2 and (0,0,0) = 0}
+%REGLA SWITCH SALARIO/IMPUESTOS
+rule : 2 1000 {cellpos(2) = 2 and (0,0,0) = 0}
+rule : 1 0 {cellpos(2) = 2 and (0,0,0) = 2}
 rule : 0 0 {cellpos(2) = 2 and (0,0,0) = 1}
 
