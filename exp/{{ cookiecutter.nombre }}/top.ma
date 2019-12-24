@@ -50,12 +50,9 @@ neighbors :                                  persona(2,0,0)
 
 
 [persona-rule]
-% ------- GENERACION PROX DIRECCION ------- 
-rule : {1} 100 {cellpos(2) = 1 and ({{ cookiecutter.cant_locales_izquierda }} / 4) >= random }
-rule : {2} 100 {cellpos(2) = 1 and ({{ cookiecutter.cant_locales_arriba }} / 4) >= random }
-rule : {3} 100 {cellpos(2) = 1 and ({{ cookiecutter.cant_locales_derecha }} / 4) >= random }
-rule : {4} 100 {cellpos(2) = 1 and ({{ cookiecutter.cant_locales_abajo }} / 4) >= random }
-rule : {randInt(3) + 1} 100 {cellpos(2) = 1}
+% ------- LOCAL GANA PLATA CUANDO PERSONA CONSUME ------- 
+rule: {(0,0,0) + {{ cookiecutter.costo_consumicion }}} 0 { cellpos(2) = 3 and (0,0,0) > 0 and (0,0,1) < 0}
+rule: {-1 * (0,0,0)} 0 { cellpos(2) = 0 and (0,0,0) < 0} % volvemos a invertir el sueldo de la persona para que quede normal, despues de consumir.
 
 % ------- PERSONAS COBRAN SALARIO CUANDO SWITCH SE ACTIVA ------- 
 rule : {(0,0,0) + {{ cookiecutter.salario_personas }}} 0 { cellpos(2) = 0 and (0,0,0) != 0 and (0,0,2) = 2}
@@ -63,6 +60,13 @@ rule : {(0,0,0) + {{ cookiecutter.salario_personas }}} 0 { cellpos(2) = 0 and (0
 % ------- LOCALES PAGAN IMPUESTOS CUANDO SWITCH SE ACTIVA------- 
 rule : {(0,0,0) - {{ cookiecutter.impuestos_local }}} 0 { cellpos(2) = 3 and (0,0,0) >= {{ cookiecutter.impuestos_local }} and (0,0,3) = 1}
 rule : {0} 0 { cellpos(2) = 3 and (0,0,0) < {{ cookiecutter.impuestos_local }} and (0,0,3) = 1}
+
+% ------- GENERACION PROX DIRECCION ------- 
+rule : {1} 100 {cellpos(2) = 1 and ({{ cookiecutter.cant_locales_izquierda }} / 4) >= random }
+rule : {2} 100 {cellpos(2) = 1 and ({{ cookiecutter.cant_locales_arriba }} / 4) >= random }
+rule : {3} 100 {cellpos(2) = 1 and ({{ cookiecutter.cant_locales_derecha }} / 4) >= random }
+rule : {4} 100 {cellpos(2) = 1 and ({{ cookiecutter.cant_locales_abajo }} / 4) >= random }
+rule : {randInt(3) + 1} 100 {cellpos(2) = 1}
 
 % ------- ABRIR LOCAL ------- 
 % si la persona abre un local, para que aparezca un local y la persona pierda plata a la vez, ponemos como "estado intermedio" que el local empieza con -1 de plata y en el mismo instante si en la capa de locales esta en -1 la persona se descuenta de su sueldo y el local agrega su ganancia
@@ -76,10 +80,6 @@ rule : {-1 * ((0,-1,0) - {{ cookiecutter.costo_consumicion }})} 100 { cellpos(2)
 rule : {-1 * ((-1,0,0) - {{ cookiecutter.costo_consumicion }})} 100 { cellpos(2) = 0 and (0,0,0) = 0 and (-1,0,0) > {{ cookiecutter.costo_consumicion }} and (-1,0,1) = 4 and ((0,-1,0) = 0 or (0,-1,1) != 3) and (0,0,3) > 0 and random < {{ cookiecutter.proba_consumir }}}
 rule : {-1 * ((0,1,0) - {{ cookiecutter.costo_consumicion }})}  100 { cellpos(2) = 0 and (0,0,0) = 0 and (0,1,0)  > {{ cookiecutter.costo_consumicion }} and (0,1,1) = 1  and ((0,-1,0) = 0 or (0,-1,1) != 3) and ((-1,0,0) = 0 or (-1,0,1) != 4) and (0,0,3) > 0 and random < {{ cookiecutter.proba_consumir }}}
 rule : {-1 * ((1,0,0) - {{ cookiecutter.costo_consumicion }})}  100 { cellpos(2) = 0 and (0,0,0) = 0 and (1,0,0) > {{ cookiecutter.costo_consumicion }} and (1,0,1) = 2  and ((0,-1,0) = 0 or (0,-1,1) != 3) and ((-1,0,0) = 0 or (-1,0,1) != 4) and ((0,1,0) = 0 or (0,1,1) != 1) and (0,0,3) > 0 and random < {{ cookiecutter.proba_consumir }}}
-
-% ------- LOCAL GANA PLATA CUANDO PERSONA CONSUME ------- 
-rule: {(0,0,0) + {{ cookiecutter.costo_consumicion }}} 0 { cellpos(2) = 3 and (0,0,0) > 0 and (0,0,1) < 0}
-rule: {-1 * (0,0,0)} 0 { cellpos(2) = 0 and (0,0,0) < 0} % volvemos a invertir el sueldo de la persona para que quede normal, despues de consumir.
 
 % ------- MOVIMIENTO: PERSONA CONTIGUA SE MUEVE A CELDA ACTUAL (SIN CONSUMIR)------- 
 rule : {(0,-1,0)} 100 { cellpos(2) = 0 and (0,0,0) = 0 and (0,-1,0) > 0 and (0,-1,1) = 3 } 
