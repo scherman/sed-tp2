@@ -1,0 +1,12 @@
+{
+    "nombre": "model",
+    "cant_locales_arriba": "(if((-2,0,2) > 0, 1, 0) + if((-1,0,2) > 0, 1, 0) + if((-1,-1,2) > 0, 1, 0) + if((-1,1,2) > 0, 1, 0))",
+    "cant_locales_abajo": "(if((1,0,2) > 0, 1, 0) + if((2,0,2) > 0, 1, 0) + if((1,1,2) > 0, 1, 0) + if((1,-1,2) > 0, 1, 0))",
+    "cant_locales_derecha": "(if((0,1,2) > 0, 1, 0) + if((0,2,2) > 0, 1, 0) + if((-1,1,2) > 0, 1, 0) + if((1,1,2) > 0, 1, 0))",
+    "cant_locales_izquierda": "(if((0,-1,2) > 0, 1, 0) + if((0,-2,2) > 0, 1, 0) + if((-1,-1,2) > 0, 1, 0) + if((1,-1,2) > 0, 1, 0))",
+    "salario_personas": 10,
+    "impuestos_local": 10,
+    "costo_poner_local": 15,
+    "proba_poner_local": 0.25,
+    "proba_consumir": 0.9
+}
