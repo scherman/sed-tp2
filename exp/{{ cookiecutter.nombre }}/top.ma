@@ -6,7 +6,7 @@ type : cell
 border : wrapped
 delay : inertial
 defaultDelayTime : 100
-dim : (5, 5, 4)
+dim : (10, 10, 4)
 initialCellsValue : top.val
 initialValue : 0
 localTransition : persona-rule
@@ -51,10 +51,10 @@ neighbors :                                  persona(2,0,0)
 
 [persona-rule]
 % ------- GENERACION PROX DIRECCION ------- 
-rule : {1} 100 {cellpos(2) = 1 and ({{ cookiecutter.cant_locales_izquierda }} / 5) >= random } % 5 lo tire por tirar, tiene que ser >4 si o si para que sea una probabilidad, cuanto mas grande, mas random va a ser
-rule : {2} 100 {cellpos(2) = 1 and ({{ cookiecutter.cant_locales_arriba }} / 5) >= random }
-rule : {3} 100 {cellpos(2) = 1 and ({{ cookiecutter.cant_locales_derecha }} / 5) >= random }
-rule : {4} 100 {cellpos(2) = 1 and ({{ cookiecutter.cant_locales_abajo }} / 5) >= random }
+rule : {1} 100 {cellpos(2) = 1 and ({{ cookiecutter.cant_locales_izquierda }} / 4) >= random }
+rule : {2} 100 {cellpos(2) = 1 and ({{ cookiecutter.cant_locales_arriba }} / 4) >= random }
+rule : {3} 100 {cellpos(2) = 1 and ({{ cookiecutter.cant_locales_derecha }} / 4) >= random }
+rule : {4} 100 {cellpos(2) = 1 and ({{ cookiecutter.cant_locales_abajo }} / 4) >= random }
 rule : {randInt(3) + 1} 100 {cellpos(2) = 1}
 
 % ------- PERSONAS COBRAN SALARIO CUANDO SWITCH SE ACTIVA ------- 
@@ -72,13 +72,13 @@ rule : { {{ cookiecutter.costo_poner_local }} } 0 { cellpos(2) = 3 and (0,0,0) =
 
 % ------- MOVIMIENTO: PERSONA CONTIGUA SE MUEVE A CELDA ACTUAL (CONSUMIENDO SI HAY LOCAL) ------- 
 % para hacer que una persona gaste plata cuando entre a un local y el local gane al mismo tiempo, lo que hacemos es tener un "estado intermedio" en donde la persona que viene y consume termina con su sueldo en negativo, para que despues en la prox regla un local vea si el sueldo de la persona esta en negativo significa que consumio, entonces cobra.
-rule : {-1 * ((0,-1,0) - 5)} 100 { cellpos(2) = 0 and (0,0,0) = 0 and (0,-1,0) > 5 and (0,-1,1) = 3 and (0,0,3) > 0 and random < {{ cookiecutter.proba_consumir }}} 
-rule : {-1 * ((-1,0,0) - 5)} 100 { cellpos(2) = 0 and (0,0,0) = 0 and (-1,0,0) > 5 and (-1,0,1) = 4 and ((0,-1,0) = 0 or (0,-1,1) != 3) and (0,0,3) > 0 and random < {{ cookiecutter.proba_consumir }}}
-rule : {-1 * ((0,1,0) - 5)}  100 { cellpos(2) = 0 and (0,0,0) = 0 and (0,1,0)  > 5 and (0,1,1) = 1  and ((0,-1,0) = 0 or (0,-1,1) != 3) and ((-1,0,0) = 0 or (-1,0,1) != 4) and (0,0,3) > 0 and random < {{ cookiecutter.proba_consumir }}}
-rule : {-1 * ((1,0,0) - 5)}  100 { cellpos(2) = 0 and (0,0,0) = 0 and (1,0,0) > 5 and (1,0,1) = 2  and ((0,-1,0) = 0 or (0,-1,1) != 3) and ((-1,0,0) = 0 or (-1,0,1) != 4) and ((0,1,0) = 0 or (0,1,1) != 1) and (0,0,3) > 0 and random < {{ cookiecutter.proba_consumir }}}
+rule : {-1 * ((0,-1,0) - {{ cookiecutter.costo_consumicion }})} 100 { cellpos(2) = 0 and (0,0,0) = 0 and (0,-1,0) > {{ cookiecutter.costo_consumicion }} and (0,-1,1) = 3 and (0,0,3) > 0 and random < {{ cookiecutter.proba_consumir }}} 
+rule : {-1 * ((-1,0,0) - {{ cookiecutter.costo_consumicion }})} 100 { cellpos(2) = 0 and (0,0,0) = 0 and (-1,0,0) > {{ cookiecutter.costo_consumicion }} and (-1,0,1) = 4 and ((0,-1,0) = 0 or (0,-1,1) != 3) and (0,0,3) > 0 and random < {{ cookiecutter.proba_consumir }}}
+rule : {-1 * ((0,1,0) - {{ cookiecutter.costo_consumicion }})}  100 { cellpos(2) = 0 and (0,0,0) = 0 and (0,1,0)  > {{ cookiecutter.costo_consumicion }} and (0,1,1) = 1  and ((0,-1,0) = 0 or (0,-1,1) != 3) and ((-1,0,0) = 0 or (-1,0,1) != 4) and (0,0,3) > 0 and random < {{ cookiecutter.proba_consumir }}}
+rule : {-1 * ((1,0,0) - {{ cookiecutter.costo_consumicion }})}  100 { cellpos(2) = 0 and (0,0,0) = 0 and (1,0,0) > {{ cookiecutter.costo_consumicion }} and (1,0,1) = 2  and ((0,-1,0) = 0 or (0,-1,1) != 3) and ((-1,0,0) = 0 or (-1,0,1) != 4) and ((0,1,0) = 0 or (0,1,1) != 1) and (0,0,3) > 0 and random < {{ cookiecutter.proba_consumir }}}
 
-% -------  LOCAL GANA PLATA CUANDO PERSONA CONSUME ------- 
-rule: {(0,0,0) + 5} 0 { cellpos(2) = 3 and (0,0,0) > 0 and (0,0,1) < 0}
+% ------- LOCAL GANA PLATA CUANDO PERSONA CONSUME ------- 
+rule: {(0,0,0) + {{ cookiecutter.costo_consumicion }}} 0 { cellpos(2) = 3 and (0,0,0) > 0 and (0,0,1) < 0}
 rule: {-1 * (0,0,0)} 0 { cellpos(2) = 0 and (0,0,0) < 0} % volvemos a invertir el sueldo de la persona para que quede normal, despues de consumir.
 
 % ------- MOVIMIENTO: PERSONA CONTIGUA SE MUEVE A CELDA ACTUAL (SIN CONSUMIR)------- 
