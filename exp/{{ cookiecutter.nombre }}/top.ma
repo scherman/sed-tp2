@@ -57,15 +57,15 @@ rule: {-1 * (0,0,0)} 0 { cellpos(2) = 0 and (0,0,0) < 0} % volvemos a invertir e
 % ------- PERSONAS COBRAN SALARIO CUANDO SWITCH SE ACTIVA ------- 
 rule : {(0,0,0) + {{ cookiecutter.salario_personas }}} 0 { cellpos(2) = 0 and (0,0,0) != 0 and (0,0,2) = 2}
 
-% ------- LOCALES PAGAN IMPUESTOS CUANDO SWITCH SE ACTIVA------- 
+% ------- LOCALES PAGAN IMPUESTOS CUANDO SWITCH SE ACTIVA ------- 
 rule : {(0,0,0) - {{ cookiecutter.impuestos_local }}} 0 { cellpos(2) = 3 and (0,0,0) >= {{ cookiecutter.impuestos_local }} and (0,0,3) = 1}
 rule : {0} 0 { cellpos(2) = 3 and (0,0,0) < {{ cookiecutter.impuestos_local }} and (0,0,3) = 1}
 
 % ------- GENERACION PROX DIRECCION ------- 
-rule : {1} 100 {cellpos(2) = 1 and ({{ cookiecutter.cant_locales_izquierda }} / 4) >= random }
-rule : {2} 100 {cellpos(2) = 1 and ({{ cookiecutter.cant_locales_arriba }} / 4) >= random }
-rule : {3} 100 {cellpos(2) = 1 and ({{ cookiecutter.cant_locales_derecha }} / 4) >= random }
-rule : {4} 100 {cellpos(2) = 1 and ({{ cookiecutter.cant_locales_abajo }} / 4) >= random }
+rule : {1} 100 {cellpos(2) = 1 and random <= ({{ cookiecutter.cant_locales_izquierda }} / 4) }
+rule : {2} 100 {cellpos(2) = 1 and random <= ({{ cookiecutter.cant_locales_arriba }} / 4) }
+rule : {3} 100 {cellpos(2) = 1 and random <= ({{ cookiecutter.cant_locales_derecha }} / 4) }
+rule : {4} 100 {cellpos(2) = 1 and random <= ({{ cookiecutter.cant_locales_abajo }} / 4) }
 rule : {randInt(3) + 1} 100 {cellpos(2) = 1}
 
 % ------- ABRIR LOCAL ------- 
@@ -92,6 +92,9 @@ rule : 0 100 {cellpos(2) = 0 and (0,0,0) != 0 and (0,1,0)  = 0 and (0,0,1) = 3 }
 rule : 0 100 {cellpos(2) = 0 and (0,0,0) != 0 and (1,0,0)  = 0 and (0,0,1) = 4 and ((1,-1,0)  = 0 or (1,-1,1) != 3)}
 rule : 0 100 {cellpos(2) = 0 and (0,0,0) != 0 and (0,-1,0) = 0 and (0,0,1) = 1 and ((0,-2,0)  = 0 or (0,-2,1) != 3) and ((-1,-1,0) = 0 or (-1,-1,1) != 4)} 
 rule : 0 100 {cellpos(2) = 0 and (0,0,0) != 0 and (-1,0,0) = 0 and (0,0,1) = 2 and ((-1,-1,0) = 0 or (-1,-1,1) != 3) and ((-2,0,0) = 0 or (-2,0,1) != 4) and ((-1,1,0) = 0 or (-1,1,1) != 1)}
+
+% ------- SI ME QUEDE EN EL LUGAR, CONSUMO ---------
+rule : {-1 * ((0,0,0) - {{ cookiecutter.costo_consumicion }})}  100 { cellpos(2) = 0 and (0,0,0) > {{ cookiecutter.costo_consumicion }} and random < {{ cookiecutter.proba_consumir }}}
 
 % ------- SWITCH SALARIO/IMPUESTOS ------- 
 rule : 2 1000 {cellpos(2) = 2 and (0,0,0) = 0}
